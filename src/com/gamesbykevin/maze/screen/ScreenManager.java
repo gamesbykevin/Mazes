@@ -64,7 +64,7 @@ public final class ScreenManager implements Screen, Disposable
     /**
      * The y-coordinate where we want to start putting the buttons
      */
-    public static final int BUTTON_Y = 90;
+    public static final int BUTTON_Y = 215;
     
     /**
      * The y-coordinate spacing between each button
@@ -205,8 +205,8 @@ public final class ScreenManager implements Screen, Disposable
         if (getScreenGame() != null)
         {
             //if the game and player exist, stop the timer
-            //if (getScreenGame().getGame() != null && getScreenGame().getGame().getPlayer() != null)
-            //    getScreenGame().getGame().getPlayer().stopTimer();
+            if (getScreenGame().getGame() != null && getScreenGame().getGame().getHuman() != null)
+                getScreenGame().getGame().getHuman().stopTimer();
         }
         
         //if pausing store the previous state
@@ -234,20 +234,8 @@ public final class ScreenManager implements Screen, Disposable
         //if we are not running
         if (getState() != State.Running)
         {
-            //if we are now running
-            if (state == State.Running)
-            {
-                //stop all sound
-                Audio.stop();
-
-                //play random song
-                //Audio.play(GamePanel.RANDOM.nextBoolean() ? Assets.AudioGameKey.Music1 : Assets.AudioGameKey.Music2, true);
-            }
-            else
-            {
-                //stop sound
-                Audio.stop();
-            }
+            //stop sound
+            Audio.stop();
         }
         
         //assign the state

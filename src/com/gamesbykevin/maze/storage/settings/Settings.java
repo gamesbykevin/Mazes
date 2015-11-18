@@ -34,27 +34,27 @@ public final class Settings extends Internal
                 //split the content into an array
                 final String[] data = super.getContent().toString().split(SEPARATOR);
 
-                //parse settings
-                final int difficultyIndex = Integer.parseInt(data[0]);
-                final int modeIndex = Integer.parseInt(data[1]);
-                final int levelIndex = Integer.parseInt(data[2]);
-                final boolean audioEnabled = Boolean.parseBoolean(data[3]);
-                final boolean collisionEnabled = Boolean.parseBoolean(data[4]);
-
-                //assign settings
-                /*
-                screen.setDifficultyIndex(difficultyIndex);
-                screen.setModeIndex(modeIndex);
-                screen.setLevelIndex(levelIndex);
-                screen.setCollision(collisionEnabled);
-                Audio.setAudioEnabled(audioEnabled);
-                */
+                for (int key = 0; key < data.length; key++)
+                {
+                	//get the index value in this array element
+                	int index = Integer.parseInt(data[key]);
+                	
+                	//restore settings
+                	screen.setIndex(key, index);
+                	
+                	//if the sound option, we need to flag the audio enabled/disabled
+                	if (key == OptionsScreen.INDEX_BUTTON_SOUND)
+                		Audio.setAudioEnabled(index == 0);
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
+        
+        //make sure the text in the buttons are aligned
+        screen.reset();
     }
     
     /**
@@ -68,25 +68,17 @@ public final class Settings extends Internal
             //remove all existing content
             super.getContent().delete(0, super.getContent().length());
 
-            //option settings
-            /*
-            final int difficultyIndex = screen.getDifficultyIndex();
-            final int modeIndex = screen.getModeIndex();
-            final int levelIndex = screen.getLevelIndex();
-            final boolean audioEnabled = Audio.isAudioEnabled();
-            final boolean collisionEnabled = screen.hasCollision();
+            //save every option we have in our options screen
+            for (int key = 0; key < screen.getButtons().size(); key++)
+            {
+            	//add the data to our string builder
+            	super.getContent().append(screen.getButtons().get(key).getIndex());
+            	
+            	//if not at the last option add delimiter
+            	if (key < screen.getButtons().size() - 1)
+            		super.getContent().append(SEPARATOR);
+            }
 
-            //add the settings to the string builder
-            super.getContent().append(difficultyIndex);
-            super.getContent().append(SEPARATOR);
-            super.getContent().append(modeIndex);
-            super.getContent().append(SEPARATOR);
-            super.getContent().append(levelIndex);
-            super.getContent().append(SEPARATOR);
-            super.getContent().append(audioEnabled);
-            super.getContent().append(SEPARATOR);
-            super.getContent().append(collisionEnabled);
-			*/
             //save data
             super.save();
         }

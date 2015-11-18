@@ -17,9 +17,14 @@ public interface IController extends Disposable
      * @param x x-coordinate
      * @param y y-coordinate
      * @throws Exception
-     * @return true if motion event was applied, false otherwise
      */
-    public boolean updateMotionEvent(final MotionEvent event, final float x, final float y) throws Exception;
+    public void update(final MotionEvent event, final float x, final float y) throws Exception;
+    
+    /**
+     * Logic to update at runtime, separate from the motion event
+     * @throws Exception
+     */
+    public void update() throws Exception;
     
     /**
      * Render our controller
@@ -27,4 +32,9 @@ public interface IController extends Disposable
      * @throws Exception
      */
     public void render(final Canvas canvas) throws Exception;
+    
+    /**
+     * Reset the controller
+     */
+    public void reset();
 }

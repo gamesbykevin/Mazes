@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.gamesbykevin.androidframework.io.storage.Internal;
 import com.gamesbykevin.maze.game.Game;
+import com.gamesbykevin.maze.screen.OptionsScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,12 @@ public final class ScoreCard extends Internal
     private List<Score> scores;
     
     /**
-     * New level separator string
+     * New score separator string
      */
-    private static final String NEW_LEVEL = ";";
+    private static final String NEW_SCORE = ";";
     
     /**
-     * This string will separate the level from the time
+     * This string will separate the data for a score
      */
     private static final String SEPARATOR = "-";
     
@@ -44,37 +45,114 @@ public final class ScoreCard extends Internal
         if (super.getContent().toString().trim().length() > 0)
         {
             //load file with each level on a new line
-            final String[] levels = super.getContent().toString().split(NEW_LEVEL);
+            final String[] scores = super.getContent().toString().split(NEW_SCORE);
 
             //load each level into our array
-            for (int index = 0; index < levels.length; index++)
+            for (int index = 0; index < scores.length; index++)
             {
                 //split level data
-                String[] data = levels[index].split(SEPARATOR);
+                String[] data = scores[index].split(SEPARATOR);
 
                 //get the information
-                final int modeIndex = Integer.parseInt(data[0]);
-                final int difficultyIndex = Integer.parseInt(data[1]);
-                final int level = Integer.parseInt(data[2]);
-                final long time = Long.parseLong(data[3]);
+                final int level = Integer.parseInt(data[0]);
+                final int size = Integer.parseInt(data[1]);
+                final long time = Long.parseLong(data[2]);
 
                 //load the score to our list
-                update(modeIndex, difficultyIndex, level, time);
+                update(level, size, time);
             }
         }
     }
     
     /**
-     * Update the level with the specified score.<br>
-     * If the specified level does not exist for the difficulty, it will be added
-     * @param modeIndex The mode index
-     * @param difficultyIndex The difficulty index
+     * Do we have the score?<br>
+     * We want the score of the specified level and size
+     * @param level The level index
+     * @param size The size index
+     * @return true if the specified score exists, false otherwise
+     */
+    public boolean hasScore(final int level, final int size)
+    {
+    	return (getScore(level, size) != null);
+    }
+    
+    /**
+     * Do we have the score?<br>
+     * We will get the score of the current level and size and see if exists
+     * @return true if the specified score exists, false otherwise
+     */
+    public boolean hasScore()
+    {
+    	//use the current level index, and maze size
+    	return hasScore(game.getLevels().getLevelIndex(), game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_SIZE));
+    }
+    
+    /**
+     * Get the score object.<br>
+     * We will get the score of the current level and size
+     * @return The score object of the current level and size, if not found null is returned
+     */
+    public Score getScore()
+    {
+    	return getScore(game.getLevels().getLevelIndex(), game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_SIZE));
+    }
+    
+    /**
+     * Get the score object of the specified level and size
+     * @param level The level index
+     * @param size The level index
+     * @return The score object of the specified level and size, if not found null is returned
+     */
+    public Score getScore(final int level, final int size)
+    {
+    	//check our list to see if the specified score is better
+    	for (Score score : scores)
+    	{
+    		//if the level and size match return the score
+    		if (score.getLevel() == level && score.getSize() == size)
+    			return score;
+    	}
+    	
+    	//score was not found
+    	return null;
+    }
+    
+    /**
+     * Update the score with the specified time if the time is less than the existing.<br>
+     * If the score does not exist, it will be added.<br>
      * @param level The specified level
+     * @param size The size of the level
      * @param time The time duration
      * @return true if updating the score was successful, false otherwise
      */
-    public boolean update(final int modeIndex, final int difficultyIndex, final int level, final long time)
+    public boolean update(final int level, final int size, final long time)
     {
+    	//our score object
+    	Score score = getScore(level, size);
+    	
+    	if (score == null)
+    	{
+    		//score does not exist, so add it
+    		scores.add(new Score(level, size, time));
+    	}
+    	else
+    	{
+    		//if the time is less update the time
+    		if (time < score.getTime())
+    		{
+    			score.setTime(time);
+    		}
+    		else
+    		{
+    			//score was not updated
+    			return false;
+    		}
+    	}
+    	
+    	//save the score
+    	save();
+    	
+    	//score was updated
     	return true;
     }
     
@@ -89,16 +167,14 @@ public final class ScoreCard extends Internal
         
         for (Score score : scores)
         {
-            //if content exists, add new line, to separate each level
+            //if content exists, add delimiter to separate each score
             if (super.getContent().length() > 0)
-                super.getContent().append(NEW_LEVEL);
+                super.getContent().append(NEW_SCORE);
             
-            //write difficulty, level, time
-            super.getContent().append(score.getModeIndex());
-            super.getContent().append(SEPARATOR);
-            super.getContent().append(score.getDifficultyIndex());
-            super.getContent().append(SEPARATOR);
+            //write level, size, and time
             super.getContent().append(score.getLevel());
+            super.getContent().append(SEPARATOR);
+            super.getContent().append(score.getSize());
             super.getContent().append(SEPARATOR);
             super.getContent().append(score.getTime());
         }

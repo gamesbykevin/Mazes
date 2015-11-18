@@ -18,7 +18,7 @@ public class Splash extends Activity
     /**
      * Time delay to show the splash screen
      */
-    private static final long TIME_DELAY = 1500L;
+    private static final long TIME_DELAY = 1000L;
     
     /**
      * Called when the activity is first created
@@ -32,14 +32,25 @@ public class Splash extends Activity
 
         //set the screen to full screen
         super.getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	        WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+	        WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
         
         //call parent create
         super.onCreate(savedInstanceState);
         
         //set our content view to show the image
         super.setContentView(R.layout.splash);
+        
+        try
+        {
+            //load the game assets
+            Assets.load(this);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -59,16 +70,6 @@ public class Splash extends Activity
     {
         //call parent functionality
         super.onStart();
-        
-        try
-        {
-            //load the game assets
-            Assets.load(this);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
         
         //add a delay to show the splash image before starting main activity
         new Handler().postDelayed(new Runnable() {

@@ -17,6 +17,11 @@ public interface IGame extends Disposable
     public void reset() throws Exception;
     
     /**
+     * Logic to update element
+     */
+    public void update() throws Exception;
+    
+    /**
      * Logic to render the game
      * @param canvas Canvas where we draw
      * @throws Exception

@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.gamesbykevin.androidframework.resources.Audio;
 import com.gamesbykevin.androidframework.resources.Disposable;
 import com.gamesbykevin.maze.MainActivity;
 import com.gamesbykevin.maze.assets.Assets;
@@ -54,6 +53,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         super.setFocusable(true);
     }
     
+    /**
+     * Get the main game thread.<br>
+     * If the main thread does not exist, it will be created
+     * @return The main game thread
+     */
+    private MainThread getThread()
+    {
+    	return this.thread;
+    }
+    
+    /**
+     * Get the screen manager 
+     * @return The screen manager containing all our screens
+     */
+    private ScreenManager getScreen()
+    {
+    	return this.screen;
+    }
+    
     @Override
     public void dispose()
     {
@@ -71,13 +89,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
                 //increase count
                 count++;
                 
-                if (thread != null)
+                if (getThread() != null)
                 {
                     //set running false, to stop the infinite loop
-                    thread.setRunning(false);
+                	getThread().setRunning(false);
 
                     //wait for thread to finish
-                    thread.join();
+                	getThread().join();
                 }
                 
                 //if we made it here, we were successful
@@ -114,6 +132,33 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         return this.activity;
     }
     
+    @Override
+    public boolean onTouchEvent(final MotionEvent event)
+    {
+        try
+        {
+            if (getScreen() != null)
+            {
+                //calculate the coordinate offset
+                final float scaleFactorX = (float)WIDTH / getWidth();
+                final float scaleFactorY = (float)HEIGHT / getHeight();
+
+                //adjust the coordinates
+                final float x = event.getRawX() * scaleFactorX;
+                final float y = event.getRawY() * scaleFactorY;
+
+                //update the events
+                return getScreen().update(event, x, y);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return super.onTouchEvent(event);
+    }
+    
     /**
      * Now that the surface has been created we can create our game objects
      * @param holder Object used to track events
@@ -130,64 +175,32 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
             if (RANDOM == null)
                 RANDOM = new Random(System.nanoTime());
             
-            //if the thread does not exist, create it
-            if (this.thread == null)
-                this.thread = new MainThread(getHolder(), this);
-
+            //create the thread if it doesn't exist
+            if (getThread() == null)
+        		this.thread = new MainThread(getHolder(), this);
+            
             //if the thread hasn't been started yet
-            if (!this.thread.isRunning())
+            if (!getThread().isRunning())
             {
                 //start the thread
-                this.thread.setRunning(true);
-                this.thread.start();
+            	getThread().setRunning(true);
+            	getThread().start();
             }
             
+            //flag the thread as not paused
+            getThread().setPause(false);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-    }
-    
-    @Override
-    public boolean onTouchEvent(final MotionEvent event)
-    {
-        try
-        {
-            if (this.screen != null)
-            {
-                //calculate the coordinate offset
-                final float scaleFactorX = (float)WIDTH / getWidth();
-                final float scaleFactorY = (float)HEIGHT / getHeight();
-
-                //adjust the coordinates
-                final float x = event.getRawX() * scaleFactorX;
-                final float y = event.getRawY() * scaleFactorY;
-
-                //update the events
-                return this.screen.update(event, x, y);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        
-        return super.onTouchEvent(event);
     }
     
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        //pause the game
-        if (screen != null)
-        {
-            //stop all audio while paused
-            Audio.stop();
-            
-            //set the state
-            screen.setState(ScreenManager.State.Paused);
-        }
+    	//finish the activity
+    	getActivity().finish();
     }
     
     @Override
@@ -204,7 +217,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         try
         {
             //make sure the screen is created first before the thread starts
-            if (this.screen == null)
+            if (getScreen() == null)
             {
                 //load all assets
                 Assets.load(getActivity());
@@ -214,13 +227,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
             }
             else
             {
-                screen.update();
+            	getScreen().update();
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public void onDraw(Canvas canvas)
+    {
+    	draw(canvas);
     }
     
     @Override
@@ -234,7 +253,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
             try
             {
                 //make sure the screen object exists
-                if (screen != null)
+                if (getScreen() != null)
                 {
                     final float scaleFactorX = getWidth() / (float)GamePanel.WIDTH;
                     final float scaleFactorY = getHeight() / (float)GamePanel.HEIGHT;
@@ -242,8 +261,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
                     //scale to the screen size
                     canvas.scale(scaleFactorX, scaleFactorY);
                 
-                    //render the main sreen containing the game and other screens
-                    screen.render(canvas);
+                    //render the main screen containing the game and other screens
+                    getScreen().render(canvas);
                 }
             }
             catch (Exception e)

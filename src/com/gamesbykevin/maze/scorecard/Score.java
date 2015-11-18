@@ -6,48 +6,26 @@ package com.gamesbykevin.maze.scorecard;
  */
 public final class Score 
 {
-    //the level this score is for
-    private int level;
+    //the level this time is for
+    private final int level;
     
-    //the time this score is for
+    //the size of the maze
+    private final int size;
+    
+    //the time it took to complete
     private long time;
     
-    //the difficulty this score is for
-    private final int difficultyIndex;
-    
-    //the mode this score is for
-    private final int modeIndex;
-    
-    protected Score(final int modeIndex, final int difficultyIndex, final int level, final long time)
+    protected Score(final int level, final int size, final long time)
     {
-        this.modeIndex = modeIndex;
-        this.difficultyIndex = difficultyIndex;
-        
-        setLevel(level);
+    	//assign default values
+    	this.level = level;
+    	this.size = size;
         setTime(time);
     }
     
     /**
-     * Get the mode index
-     * @return The mode this score is for
-     */
-    public int getModeIndex()
-    {
-        return this.modeIndex;
-    }
-    
-    /**
-     * Get the difficulty index
-     * @return The difficulty this score is for
-     */
-    public int getDifficultyIndex()
-    {
-        return this.difficultyIndex;
-    }
-    
-    /**
-     * Get the level
-     * @return The level for this score
+     * Get the level index
+     * @return The level this score is for
      */
     public int getLevel()
     {
@@ -55,17 +33,17 @@ public final class Score
     }
     
     /**
-     * Assign the level
-     * @param level The level for this score
+     * Get the size
+     * @return The size of maze for this score
      */
-    public void setLevel(final int level)
+    public int getSize()
     {
-        this.level = level;
+        return this.size;
     }
     
     /**
      * Get the time
-     * @return The time to complete the level
+     * @return The time it took to complete
      */
     public long getTime()
     {
@@ -74,9 +52,9 @@ public final class Score
     
     /**
      * Set the time
-     * @param time The time to complete the level
+     * @param time The time to complete
      */
-    public void setTime(final long time)
+    public final void setTime(final long time)
     {
         this.time = time;
     }

@@ -54,7 +54,7 @@ public class GameScreen implements Screen, Disposable
     public boolean update(final MotionEvent event, final float x, final float y) throws Exception
     {
         if (getGame() != null)
-            getGame().updateMotionEvent(event, x, y);
+            getGame().update(event, x, y);
         
         return true;
     }

@@ -14,6 +14,7 @@ import com.gamesbykevin.androidframework.resources.Images;
 import com.gamesbykevin.androidframework.screen.Screen;
 import com.gamesbykevin.maze.MainActivity;
 import com.gamesbykevin.maze.assets.Assets;
+import com.gamesbykevin.maze.game.GameHelper;
 import com.gamesbykevin.maze.panel.GamePanel;
 
 /**
@@ -31,11 +32,11 @@ public class GameoverScreen implements Screen, Disposable
     //the message to display
     private String message = "";
     
-    //the dimensions of the text message
-    private int pixelW;
-    
     //buttons
     private Button next, replay, menu, rate;
+    
+    //where we draw the image
+    private int messageX = 0, messageY = 0;
     
     //time we have displayed text
     private long time;
@@ -43,7 +44,7 @@ public class GameoverScreen implements Screen, Disposable
     /**
      * The amount of time to wait until we render the game over menu
      */
-    private static final long DELAY_MENU_DISPLAY = 3000;
+    private static final long DELAY_MENU_DISPLAY = 1250L;
     
     //do we display the menu
     private boolean display = false;
@@ -70,39 +71,40 @@ public class GameoverScreen implements Screen, Disposable
         
         //the start location of the button
         int y = ScreenManager.BUTTON_Y;
+        int x = ScreenManager.BUTTON_X;
 
         //create our buttons
-        y += ScreenManager.BUTTON_Y_INCREMENT;
         this.next = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        this.next.setX(ScreenManager.BUTTON_X);
+        this.next.setX(x);
         this.next.setY(y);
         this.next.updateBounds();
-        this.next.setText(BUTTON_TEXT_NEW_GAME);
+        this.next.addDescription(BUTTON_TEXT_NEW_GAME);
         this.next.positionText(screen.getPaint());
         
         //will be in same position as next
-        y += ScreenManager.BUTTON_Y_INCREMENT;
+        x += ScreenManager.BUTTON_X_INCREMENT;
         this.replay = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        this.replay.setX(ScreenManager.BUTTON_X);
+        this.replay.setX(x);
         this.replay.setY(y);
         this.replay.updateBounds();
-        this.replay.setText(BUTTON_TEXT_REPLAY);
+        this.replay.addDescription(BUTTON_TEXT_REPLAY);
         this.replay.positionText(screen.getPaint());
         
-        y += ScreenManager.BUTTON_Y_INCREMENT;
+        x += ScreenManager.BUTTON_X_INCREMENT;
         this.menu = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        this.menu.setX(ScreenManager.BUTTON_X);
+        this.menu.setX(x);
         this.menu.setY(y);
         this.menu.updateBounds();
-        this.menu.setText(BUTTON_TEXT_MENU);
+        this.menu.addDescription(BUTTON_TEXT_MENU);
         this.menu.positionText(screen.getPaint());
         
+        x = ScreenManager.BUTTON_X + ScreenManager.BUTTON_X_INCREMENT; 
         y += ScreenManager.BUTTON_Y_INCREMENT;
         this.rate = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        this.rate.setX(ScreenManager.BUTTON_X);
+        this.rate.setX(x);
         this.rate.setY(y);
         this.rate.updateBounds();
-        this.rate.setText(MenuScreen.BUTTON_TEXT_RATE_APP);
+        this.rate.addDescription(MenuScreen.BUTTON_TEXT_RATE_APP);
         this.rate.positionText(screen.getPaint());
     }
     
@@ -133,18 +135,20 @@ public class GameoverScreen implements Screen, Disposable
         
         //create paint text object for the message
         if (paintMessage == null)
+        {
+	        //assign metrics
             paintMessage = new Paint();
-        
-        //assign metrics
-        paintMessage.setColor(Color.WHITE);
-        paintMessage.setTextSize(30f);
-        //paintMessage.setTypeface(Font.getFont(Assets.FontMenuKey.Default));
+	        paintMessage.setColor(Color.WHITE);
+	        paintMessage.setTextSize(42f);
+	        paintMessage.setTypeface(Font.getFont(Assets.FontGameKey.Default));
+        }
         
         //get the rectangle around the message
         paintMessage.getTextBounds(message, 0, message.length(), tmp);
         
-        //store the dimensions
-        pixelW = tmp.width();
+        //calculate the position of the message
+        messageX = (GamePanel.WIDTH / 2) - (tmp.width() / 2);
+        messageY = (int)(GamePanel.HEIGHT * .25);
     }
     
     @Override
@@ -158,6 +162,9 @@ public class GameoverScreen implements Screen, Disposable
         {
             if (next.contains(x, y) && next.isVisible())
             {
+                //go to the next level
+            	GameHelper.nextLevel(screen.getScreenGame().getGame());
+                
                 //remove message
                 setMessage("");
                 
@@ -177,6 +184,11 @@ public class GameoverScreen implements Screen, Disposable
                 
                 //move back to the game
                 screen.setState(ScreenManager.State.Running);
+                
+                //reset players
+                screen.getScreenGame().getGame().getCountdown().reset();
+                screen.getScreenGame().getGame().getHuman().reset();
+                screen.getScreenGame().getGame().getCpu().reset();
                 
                 //play sound effect
                 //Audio.play(Assets.AudioMenuKey.Selection);
@@ -242,15 +254,9 @@ public class GameoverScreen implements Screen, Disposable
             //only darken the background when the menu is displayed
             ScreenManager.darkenBackground(canvas);
             
+            //if message exists, draw the text
             if (paintMessage != null)
-            {
-                //calculate middle
-                final int x = (GamePanel.WIDTH / 2) - (pixelW / 2);
-                final int y = (int)(GamePanel.HEIGHT * .1);
-
-                //draw text
-                canvas.drawText(this.message, x, y, paintMessage);
-            }
+                canvas.drawText(this.message, messageX, messageY, paintMessage);
         
             //render buttons
             next.render(canvas, screen.getPaint());

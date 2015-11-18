@@ -3,6 +3,7 @@ package com.gamesbykevin.maze.assets;
 import android.app.Activity;
 
 import com.gamesbykevin.androidframework.resources.*;
+import com.gamesbykevin.maze.panel.GamePanel;
 
 /**
  * This class will contain all of our assets
@@ -60,7 +61,7 @@ public class Assets
      */
     public enum FontGameKey
     {
-        //Default
+        Default
     }
     
     /**
@@ -83,8 +84,20 @@ public class Assets
      */
     public enum ImageGameKey
     {
+    	ControllerDown, 
+    	ControllerLeft, 
+    	ControllerRight, 
+    	ControllerUp, 
         Exit,
+        LevelOpen, 
+        LevelSolved, 
+        Numbers, 
+        PageNext, 
+        PagePrevious, 
         Pause,
+        Player1,
+        Player2,
+        Road,
         SoundOff,
         SoundOn
     }
@@ -113,6 +126,16 @@ public class Assets
      */
     public enum AudioGameKey
     {
+    	Congratulations,
+    	Countdown,
+    	Music1,
+    	Music2,
+    	Music3,
+    	Music4,
+    	NewHighScore,
+    	TimeOver,
+    	YouLose,
+    	YouWin
         //LoseLife, Music1, Music2, NoLives, ProgressAdd, ProgressComplete, TimeUp, 
     }
     
@@ -162,5 +185,31 @@ public class Assets
         {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Play a random song.<br>
+     */
+    public static void playMusic()
+    {
+    	switch (GamePanel.RANDOM.nextInt(4))
+    	{
+	    	case 0:
+	    		Audio.play(AudioGameKey.Music1, true);
+	    		break;
+    		
+	    	case 1:
+	    		Audio.play(AudioGameKey.Music2, true);
+	    		break;
+	    		
+	    	case 2:
+	    		Audio.play(AudioGameKey.Music3, true);
+	    		break;
+	    		
+	    	case 3:
+    		default:
+    			Audio.play(AudioGameKey.Music4, true);
+	    		break;
+    	}
     }
 }
