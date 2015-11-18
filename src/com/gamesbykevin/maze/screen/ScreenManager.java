@@ -201,45 +201,57 @@ public final class ScreenManager implements Screen, Disposable
      */
     public void setState(final State state)
     {
-        //make sure screen game exists
-        if (getScreenGame() != null)
-        {
-            //if the game and player exist, stop the timer
-            if (getScreenGame().getGame() != null && getScreenGame().getGame().getHuman() != null)
-                getScreenGame().getGame().getHuman().stopTimer();
-        }
-        
-        //if pausing store the previous state
-        if (state == State.Paused)
-        {
-            //stop sound
-            Audio.stop();
-            
-            //set the previous state
-            getScreenPaused().setStatePrevious(getState());
-        }
-        else if (state == State.GameOver)
-        {
-            //stop sound
-            Audio.stop();
-            
-            if (getState() != State.Paused)
-            {
-                //reset screen
-                getScreen(state).reset();
-            }
-        }
-        
-        
-        //if we are not running
-        if (getState() != State.Running)
-        {
-            //stop sound
-            Audio.stop();
-        }
-        
-        //assign the state
-        this.state = state;
+    	try
+    	{
+	        //make sure screen game exists
+	        if (getScreenGame() != null)
+	        {
+	            //if the game and player exist, stop the timer
+	            if (getScreenGame().getGame() != null && getScreenGame().getGame().getHuman() != null)
+	                getScreenGame().getGame().getHuman().stopTimer();
+	        }
+	        
+	        //if pausing store the previous state
+	        if (state == State.Paused)
+	        {
+	            //stop sound
+	            Audio.stop();
+	            
+	            //set the previous state
+	            getScreenPaused().setStatePrevious(getState());
+	        }
+	        else if (state == State.GameOver)
+	        {
+	            //stop sound
+	            Audio.stop();
+	            
+	            if (getState() != State.Paused)
+	            {
+	                //reset screen
+	                getScreen(state).reset();
+	            }
+	        }
+	        
+	        //if we are not running
+	        if (getState() != State.Running)
+	        {
+	            //stop sound
+	            Audio.stop();
+	        }
+	        
+	        //if we want to start running the game
+	        if (state == State.Running)
+	        {
+	        	//if the game was previously paused, play music again
+	        	if (getState() == State.Paused || getState() == State.Exit)
+	        		Assets.playMusic();
+	        }
+    	}
+    	finally
+    	{
+        	//assign the state
+	        this.state = state;
+    	}
     }
     
     public void render(final Canvas canvas) throws Exception
