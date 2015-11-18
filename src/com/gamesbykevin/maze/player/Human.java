@@ -37,7 +37,7 @@ public class Human extends Player
 	private boolean stop = false;
 	
 	//location of player timer
-	private static final int TIME_X = GamePanel.WIDTH - 175;
+	private static final int TIME_X = GamePanel.WIDTH - 195;
 	private static final int TIME_Y = 25;
 	
 	//time description, and personal best to render to the user
@@ -282,7 +282,7 @@ public class Human extends Player
 					//if time has run out
 					if (score.getTime() - getTime() <= 0)
 					{
-						this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, 0);
+						this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, 0);
 						
 						//set state to game over
 						super.getGame().getScreen().setState(State.GameOver);
@@ -295,15 +295,15 @@ public class Human extends Player
 					}
 					else
 					{
-						this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, score.getTime() - getTime());
+						this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, score.getTime() - getTime());
 					}
 					
 					//display personal best
-					this.bestDescription = "Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, score.getTime());
+					this.bestDescription = "Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, score.getTime());
 				}
 				else
 				{
-					this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, getTime());
+					this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, getTime());
 					this.bestDescription = "Best: None";
 				}
 				break;
@@ -318,11 +318,11 @@ public class Human extends Player
 			//casual we will display
 			case 0:
 			default:
-				this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, getTime());
+				this.timeDescription = "Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, getTime());
 				this.bestDescription = "Best: None";
 				
 				if (score != null)
-					this.bestDescription = "Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, score.getTime());
+					this.bestDescription = "Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, score.getTime());
 				break;
 		}
 	}

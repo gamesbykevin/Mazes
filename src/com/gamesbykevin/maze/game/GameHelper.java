@@ -181,12 +181,12 @@ public final class GameHelper
 										Audio.play(Assets.AudioGameKey.NewHighScore);
 										
 										//assign the game over message
-										game.getScreen().getScreenGameover().setMessage("New Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, game.getHuman().getTime()));
+										game.getScreen().getScreenGameover().setMessage("New Best: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, game.getHuman().getTime()));
 									}
 									else
 									{
 										//display the current time
-										game.getScreen().getScreenGameover().setMessage("Your Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_2, game.getHuman().getTime()));
+										game.getScreen().getScreenGameover().setMessage("Your Time: " + TimeFormat.getDescription(TimeFormat.FORMAT_1, game.getHuman().getTime()));
 										
 										//no new high score so play this
 										Audio.play(Assets.AudioGameKey.Congratulations);

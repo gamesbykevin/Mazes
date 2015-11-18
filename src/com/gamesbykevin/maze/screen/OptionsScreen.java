@@ -248,7 +248,7 @@ public class OptionsScreen implements Screen, Disposable
     	                screen.setState(ScreenManager.State.Ready);
     	                
     	                //play sound effect
-    	                //Audio.play(Assets.AudioMenuKey.Selection);
+    	                Audio.play(Assets.AudioMenuKey.Selection);
     	                
     	                //no need to continue
     	                return false;
@@ -267,7 +267,7 @@ public class OptionsScreen implements Screen, Disposable
                         }
                         
                         //play sound effect
-                        //Audio.play(Assets.AudioMenuKey.Selection);
+                        Audio.play(Assets.AudioMenuKey.Selection);
                         
                         //exit loop
                         return false;
@@ -275,7 +275,7 @@ public class OptionsScreen implements Screen, Disposable
     				case INDEX_BUTTON_RENDER:
     					
                         //play sound effect
-                        //Audio.play(Assets.AudioMenuKey.Selection);
+                        Audio.play(Assets.AudioMenuKey.Selection);
                         
                         //exit loop
                         return false;
@@ -284,7 +284,7 @@ public class OptionsScreen implements Screen, Disposable
     				case INDEX_BUTTON_MODE:
                     	
                         //play sound effect
-                        //Audio.play(Assets.AudioMenuKey.Selection);
+                        Audio.play(Assets.AudioMenuKey.Selection);
                         
                         //exit loop
                         return false;

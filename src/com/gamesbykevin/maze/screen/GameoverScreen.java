@@ -172,7 +172,7 @@ public class GameoverScreen implements Screen, Disposable
                 screen.setState(ScreenManager.State.Running);
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //we don't request additional motion events
                 return false;
@@ -191,7 +191,7 @@ public class GameoverScreen implements Screen, Disposable
                 screen.getScreenGame().getGame().getCpu().reset();
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //we don't request additional motion events
                 return false;
@@ -205,7 +205,7 @@ public class GameoverScreen implements Screen, Disposable
                 screen.setState(ScreenManager.State.Ready);
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //we don't request additional motion events
                 return false;
@@ -216,7 +216,7 @@ public class GameoverScreen implements Screen, Disposable
                 setMessage("");
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //go to rate game page
                 screen.getPanel().getActivity().openWebpage(MainActivity.WEBPAGE_RATE_URL);

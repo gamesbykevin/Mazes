@@ -168,7 +168,7 @@ public class MenuScreen implements Screen, Disposable
                 screen.setState(ScreenManager.State.Options);
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //we do not request any additional events
                 return false;
@@ -176,7 +176,7 @@ public class MenuScreen implements Screen, Disposable
             else if (buttons.get(Key.Instructions).contains(x, y))
             {
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //go to instructions
                 this.screen.getPanel().getActivity().openWebpage(MainActivity.WEBPAGE_GAME_INSTRUCTIONS_URL);
@@ -187,7 +187,7 @@ public class MenuScreen implements Screen, Disposable
             else if (buttons.get(Key.Rate).contains(x, y))
             {
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //go to web page
                 this.screen.getPanel().getActivity().openWebpage(MainActivity.WEBPAGE_RATE_URL);
@@ -198,7 +198,7 @@ public class MenuScreen implements Screen, Disposable
             else if (buttons.get(Key.More).contains(x, y))
             {
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //go to web page
                 this.screen.getPanel().getActivity().openWebpage(MainActivity.WEBPAGE_MORE_GAMES_URL);
@@ -209,7 +209,7 @@ public class MenuScreen implements Screen, Disposable
             else if (buttons.get(Key.Exit).contains(x, y))
             {
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //exit game
                 this.screen.getPanel().getActivity().finish();

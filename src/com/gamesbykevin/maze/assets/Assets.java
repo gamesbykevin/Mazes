@@ -117,7 +117,7 @@ public class Assets
      */
     public enum AudioMenuKey
     {
-        //Selection
+        Selection
     }
     
     /**

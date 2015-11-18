@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import com.gamesbykevin.androidframework.awt.Button;
 import com.gamesbykevin.androidframework.resources.Audio;
 import com.gamesbykevin.androidframework.resources.Disposable;
-import com.gamesbykevin.androidframework.resources.Font;
 import com.gamesbykevin.androidframework.resources.Images;
 import com.gamesbykevin.androidframework.screen.Screen;
 import com.gamesbykevin.maze.assets.Assets;
@@ -108,7 +107,7 @@ public class ExitScreen implements Screen, Disposable
                 screen.setState(ScreenManager.State.Running);
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //return true;
                 return false;
@@ -119,7 +118,7 @@ public class ExitScreen implements Screen, Disposable
                 screen.setState(ScreenManager.State.Ready);
                 
                 //play sound effect
-                //Audio.play(Assets.AudioMenuKey.Selection);
+                Audio.play(Assets.AudioMenuKey.Selection);
                 
                 //return false;
                 return false;
