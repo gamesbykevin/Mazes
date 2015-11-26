@@ -198,8 +198,8 @@ public class Controller implements IController
                 );
                 
                 //if audio enabled, play music
-                //if (Audio.isAudioEnabled())
-                //    Audio.play(GamePanel.RANDOM.nextBoolean() ? Assets.AudioGameKey.Music1 : Assets.AudioGameKey.Music2, true);
+                if (Audio.isAudioEnabled())
+                    Assets.playMusic();
             }
             else if (buttons.get(Assets.ImageGameKey.ControllerDown).contains(x, y))
             {

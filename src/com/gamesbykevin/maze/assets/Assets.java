@@ -192,6 +192,12 @@ public class Assets
      */
     public static void playMusic()
     {
+    	//stop any other music
+    	Audio.stop(AudioGameKey.Music1);
+    	Audio.stop(AudioGameKey.Music2);
+    	Audio.stop(AudioGameKey.Music3);
+    	Audio.stop(AudioGameKey.Music4);
+    	
     	switch (GamePanel.RANDOM.nextInt(4))
     	{
 	    	case 0:
