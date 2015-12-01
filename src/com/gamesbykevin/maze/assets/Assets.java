@@ -73,8 +73,11 @@ public class Assets
     	Button,
         Cancel,
         Confirm,
+        Facebook,
+        Instructions,
     	Logo,
-    	Splash
+    	Splash,
+    	Twitter
     }
     
     
@@ -131,7 +134,6 @@ public class Assets
     	Music1,
     	Music2,
     	Music3,
-    	Music4,
     	NewHighScore,
     	TimeOver,
     	YouLose,
@@ -196,7 +198,6 @@ public class Assets
     	Audio.stop(AudioGameKey.Music1);
     	Audio.stop(AudioGameKey.Music2);
     	Audio.stop(AudioGameKey.Music3);
-    	Audio.stop(AudioGameKey.Music4);
     	
     	switch (GamePanel.RANDOM.nextInt(4))
     	{
@@ -209,12 +210,8 @@ public class Assets
 	    		break;
 	    		
 	    	case 2:
-	    		Audio.play(AudioGameKey.Music3, true);
-	    		break;
-	    		
-	    	case 3:
     		default:
-    			Audio.play(AudioGameKey.Music4, true);
+	    		Audio.play(AudioGameKey.Music3, true);
 	    		break;
     	}
     }

@@ -30,6 +30,15 @@ public class MainActivity extends Activity
     public static final String WEBPAGE_GAME_INSTRUCTIONS_URL = "http://gamesbykevin.com/2015/11/18/maze";
     
     /**
+     * The face book url
+     */
+    public static final String WEBPAGE_FACEBOOK_URL = "https://www.facebook.com/gamesbykevin";
+    
+    /**
+     * The twitter url
+     */
+    public static final String WEBPAGE_TWITTER_URL = "https://twitter.com/gamesbykevin";
+    /**
      * Called when the activity is first created
      * @param savedInstanceState 
      */

@@ -23,20 +23,20 @@ public class Levels implements IGame
     private Button levelOpen, levelSolved, pageNext, pagePrevious;
     
     //the dimensions for the levels on each page
-    private static final int COLS = 10;
-    private static final int ROWS = 5;
+    private static final int COLS = 8;
+    private static final int ROWS = 4;
     
     //the location and size of our buttons
     private static final int START_X = 10;
     private static final int START_Y = 10;
     private static final int PADDING = 20;
-    private static final int DIMENSION = 60;
+    private static final int DIMENSION = 80;
     
     //the total number of levels per page
     private static final int LEVELS_PER_PAGE = COLS * ROWS; 
     
     //the number of pages to select a level
-    private static final int PAGES = 5;
+    private static final int PAGES = 3;
     
     //the total number of levels
     public static final int TOTAL_LEVELS = LEVELS_PER_PAGE * PAGES;
@@ -78,7 +78,7 @@ public class Levels implements IGame
     	levelSolved.setHeight(DIMENSION);
     	pageNext = new Button(Images.getImage(Assets.ImageGameKey.PageNext));
     	pageNext.setX(START_X + ((COLS-1) * DIMENSION) + ((COLS-1) * PADDING));
-    	pageNext.setY(START_Y + (ROWS * DIMENSION) + (ROWS * PADDING));
+    	pageNext.setY(START_Y + (ROWS * DIMENSION) + (ROWS * PADDING) - 15);
     	pageNext.setWidth(DIMENSION);
     	pageNext.setHeight(DIMENSION);
     	pageNext.updateBounds();
