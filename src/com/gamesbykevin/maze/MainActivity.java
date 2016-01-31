@@ -38,6 +38,7 @@ public class MainActivity extends Activity
      * The twitter url
      */
     public static final String WEBPAGE_TWITTER_URL = "https://twitter.com/gamesbykevin";
+    
     /**
      * Called when the activity is first created
      * @param savedInstanceState 

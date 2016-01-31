@@ -74,6 +74,8 @@ public class Labyrinth extends Entity implements IGame
     private static final int MAZE_LARGE_ROWS = 20;
     private static final int MAZE_XLARGE_COLS = 30;
     private static final int MAZE_XLARGE_ROWS = 30;
+    private static final int MAZE_XXLARGE_COLS = 40;
+    private static final int MAZE_XXLARGE_ROWS = 40;
     
 	public Labyrinth(final Game game) throws Exception
 	{
@@ -122,6 +124,11 @@ public class Labyrinth extends Entity implements IGame
             case 3:
             	cols = Labyrinth.MAZE_XLARGE_COLS;
 	            rows = Labyrinth.MAZE_XLARGE_ROWS;
+	            break;
+	            
+            case 4:
+            	cols = Labyrinth.MAZE_XXLARGE_COLS;
+	            rows = Labyrinth.MAZE_XXLARGE_ROWS;
 	            break;
         }
 		

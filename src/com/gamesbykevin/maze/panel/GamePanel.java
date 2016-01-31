@@ -5,10 +5,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.gamesbykevin.androidframework.resources.Audio;
 import com.gamesbykevin.androidframework.resources.Disposable;
 import com.gamesbykevin.maze.MainActivity;
 import com.gamesbykevin.maze.assets.Assets;
 import com.gamesbykevin.maze.screen.ScreenManager;
+import com.gamesbykevin.maze.screen.ScreenManager.State;
 import com.gamesbykevin.maze.thread.MainThread;
 
 import java.util.Random;
@@ -36,6 +38,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
     
     //our main game thread
     private MainThread thread;
+    
+    //did motion event down happen
+    private boolean down = false;
+    
+    //get the ratio of the users screen compared to the default dimensions for the motion event
+    private float scaleMotionX, scaleMotionY;
+
+    //get the ratio of the users screen compared to the default dimensions for the render
+    private float scaleRenderX, scaleRenderY;
+    
+    //did we calculate the screen ratio yet?
+    private boolean ratio = false;
     
     /**
      * Create a new game panel
@@ -132,6 +146,34 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         return this.activity;
     }
     
+    /**
+     * Flag that we have the screen ratio
+     * @param ratio true if we calculated the screen ratio, false otherwise
+     */
+    private void setRatio(final boolean ratio)
+    {
+    	this.ratio = ratio;
+    }
+    
+    /**
+     * Did we calculate the ratio
+     * @return true if we calculated the screen ratio, false otherwise
+     */
+    private boolean hasRatio()
+    {
+    	return this.ratio;
+    }
+    
+    @Override
+    public boolean performClick() 
+    {
+        //call parent
+        super.performClick();
+        
+        //return true
+        return true;
+    }
+    
     @Override
     public boolean onTouchEvent(final MotionEvent event)
     {
@@ -139,16 +181,40 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         {
             if (getScreen() != null)
             {
-                //calculate the coordinate offset
-                final float scaleFactorX = (float)WIDTH / getWidth();
-                final float scaleFactorY = (float)HEIGHT / getHeight();
-
+            	//in order to handle multiple motion events, we need to get the action of the current event
+            	final int actionIndex = event.getActionIndex();
+            	
                 //adjust the coordinates
-                final float x = event.getRawX() * scaleFactorX;
-                final float y = event.getRawY() * scaleFactorY;
-
-                //update the events
-                return getScreen().update(event, x, y);
+                final float x = event.getX(actionIndex) * getScaleMotionX();
+                final float y = event.getY(actionIndex) * getScaleMotionY();
+            	
+                //get the current action that was performed here
+                final int action = event.getActionMasked();
+                
+                switch (action)
+                {
+	                case MotionEvent.ACTION_DOWN:
+	                	
+	                	//flag motion down occurred
+		            	down = true;
+		            	break;
+		            	
+	                case MotionEvent.ACTION_UP:
+	                	
+	                	//if we have previously action down
+	                	if (down)
+	                	{
+	                		//flag false
+	                		down = false;
+	                		
+	                    	//perform click
+	                    	performClick();
+	                	}
+	                	break;
+                }
+                
+                //update the screen/game etc.. with the specified motion events
+                getScreen().update(action, x, y);
             }
         }
         catch (Exception e)
@@ -156,7 +222,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
             e.printStackTrace();
         }
         
-        return super.onTouchEvent(event);
+        //return true because we want all motion events
+        return true;
     }
     
     /**
@@ -189,6 +256,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
             
             //flag the thread as not paused
             getThread().setPause(false);
+            
+            //if we haven't calculated the ratio yet
+            if (!hasRatio())
+            {
+	            //store the ratio for the motion event
+	            this.scaleMotionX = (float)GamePanel.WIDTH / getWidth();
+	            this.scaleMotionY = (float)GamePanel.HEIGHT / getHeight();
+	            
+	            //store the ratio for the render
+	            this.scaleRenderX = getWidth() / (float)GamePanel.WIDTH;
+	            this.scaleRenderY = getHeight() / (float)GamePanel.HEIGHT;
+	            
+	            //flag that we have the ratio
+	            setRatio(true);
+            }
         }
         catch (Exception e)
         {
@@ -199,8 +281,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-    	//finish the activity
-    	getActivity().finish();
+        //pause the game
+        if (getScreen() != null)
+        {
+            //stop all audio while paused
+            Audio.stop();
+            
+            //flag the thread as paused
+            getThread().setPause(false);
+            
+            //set the state
+            getScreen().setState(State.Paused);
+        }
+        else
+        {
+        	//if the screen does not exist, just exit the game
+        	getActivity().finish();
+        }
     }
     
     @Override
@@ -236,6 +333,42 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         }
     }
     
+    /**
+     * Get the x scale factor for the motion event
+     * @return The x ratio of the user's width compared to the default width
+     */
+    private float getScaleMotionX()
+    {
+    	return this.scaleMotionX;
+    }
+    
+    /**
+     * Get the y scale factor for the motion event
+     * @return The y ratio of the user's height compared to the default height
+     */
+    private float getScaleMotionY()
+    {
+    	return this.scaleMotionY;
+    }
+
+    /**
+     * Get the x scale factor for the render
+     * @return The x ratio of the user's width compared to the default width
+     */
+    private float getScaleRenderX()
+    {
+    	return this.scaleRenderX;
+    }
+    
+    /**
+     * Get the y scale factor for the render
+     * @return The y ratio of the user's height compared to the default height
+     */
+    private float getScaleRenderY()
+    {
+    	return this.scaleRenderY;
+    }
+    
     @Override
     public void onDraw(Canvas canvas)
     {
@@ -255,11 +388,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
                 //make sure the screen object exists
                 if (getScreen() != null)
                 {
-                    final float scaleFactorX = getWidth() / (float)GamePanel.WIDTH;
-                    final float scaleFactorY = getHeight() / (float)GamePanel.HEIGHT;
-
                     //scale to the screen size
-                    canvas.scale(scaleFactorX, scaleFactorY);
+                    canvas.scale(getScaleRenderX(), getScaleRenderY());
                 
                     //render the main screen containing the game and other screens
                     getScreen().render(canvas);

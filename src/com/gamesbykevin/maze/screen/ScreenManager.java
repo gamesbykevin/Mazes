@@ -3,7 +3,6 @@ package com.gamesbykevin.maze.screen;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.MotionEvent;
 import com.gamesbykevin.androidframework.anim.Animation;
 import com.gamesbykevin.androidframework.base.Entity;
 import com.gamesbykevin.androidframework.resources.Audio;
@@ -116,9 +115,9 @@ public final class ScreenManager implements Screen, Disposable
     }
     
     @Override
-    public boolean update(final MotionEvent event, final float x, final float y) throws Exception
+    public boolean update(final int action, final float x, final float y) throws Exception
     {
-        return getScreen(getState()).update(event, x, y);
+        return getScreen(getState()).update(action, x, y);
     }
     
     /**

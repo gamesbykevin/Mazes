@@ -133,7 +133,6 @@ public class Assets
     	Countdown,
     	Music1,
     	Music2,
-    	Music3,
     	NewHighScore,
     	TimeOver,
     	YouLose,
@@ -197,22 +196,8 @@ public class Assets
     	//stop any other music
     	Audio.stop(AudioGameKey.Music1);
     	Audio.stop(AudioGameKey.Music2);
-    	Audio.stop(AudioGameKey.Music3);
     	
-    	switch (GamePanel.RANDOM.nextInt(4))
-    	{
-	    	case 0:
-	    		Audio.play(AudioGameKey.Music1, true);
-	    		break;
-    		
-	    	case 1:
-	    		Audio.play(AudioGameKey.Music2, true);
-	    		break;
-	    		
-	    	case 2:
-    		default:
-	    		Audio.play(AudioGameKey.Music3, true);
-	    		break;
-    	}
+    	//play random song
+    	Audio.play(GamePanel.RANDOM.nextBoolean() ? AudioGameKey.Music1 : AudioGameKey.Music2, true);
     }
 }

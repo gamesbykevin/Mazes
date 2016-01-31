@@ -36,7 +36,7 @@ public class Levels implements IGame
     private static final int LEVELS_PER_PAGE = COLS * ROWS; 
     
     //the number of pages to select a level
-    private static final int PAGES = 3;
+    private static final int PAGES = 15;
     
     //the total number of levels
     public static final int TOTAL_LEVELS = LEVELS_PER_PAGE * PAGES;
@@ -311,18 +311,15 @@ public class Levels implements IGame
 					{
 						//assign the button reference
 						button = levelSolved;
-						
-						//set a blank description
-						button.setDescription(0, "");
 					}
 					else
 					{
 						//assign the button reference
 						button = levelOpen;
-						
-						//set the description
-						button.setDescription(0, "" + levelNumber);
 					}
+					
+					//set the description
+					button.setDescription(0, "" + levelNumber);
 					
 					//position the button
 					button.setX(x);

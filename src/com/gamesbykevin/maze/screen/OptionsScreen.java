@@ -87,7 +87,7 @@ public class OptionsScreen implements Screen, Disposable
         addButtonSize(x, y);
         
         //add instructions button
-        x += ScreenManager.BUTTON_X_INCREMENT;
+        x += ScreenManager.BUTTON_X_INCREMENT - 15;
         addIcon(x, y, INDEX_BUTTON_INSTRUCTIONS, Assets.ImageMenuKey.Instructions);
         
         //add face book button
@@ -154,6 +154,7 @@ public class OptionsScreen implements Screen, Disposable
         button.addDescription("Size: Medium");
         button.addDescription("Size: Large");
         button.addDescription("Size: X-Large");
+        button.addDescription("Size: XX-Large");
         button.setX(x);
         button.setY(y);
         button.updateBounds();
@@ -178,8 +179,8 @@ public class OptionsScreen implements Screen, Disposable
     private void addButtonRender(int x, int y)
     {
         Button button = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        button.addDescription("View:  2D");
         button.addDescription("View:  Isometric");
+        button.addDescription("View:  2D");
         button.setX(x);
         button.setY(y);
         button.updateBounds();
@@ -191,8 +192,8 @@ public class OptionsScreen implements Screen, Disposable
     private void addButtonSound(int x, int y)
     {
         Button button = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        button.addDescription("Sound: Enabled");
-        button.addDescription("Sound: Disabled");
+        button.addDescription("Sound: On");
+        button.addDescription("Sound: Off");
         button.setX(x);
         button.setY(y);
         button.updateBounds();
@@ -260,10 +261,10 @@ public class OptionsScreen implements Screen, Disposable
     }
     
     @Override
-    public boolean update(final MotionEvent event, final float x, final float y) throws Exception
+    public boolean update(final int action, final float x, final float y) throws Exception
     {
     	//we only want motion event up
-    	if (event.getAction() != MotionEvent.ACTION_UP)
+    	if (action != MotionEvent.ACTION_UP)
     		return true;
     	
         if (buttons != null)

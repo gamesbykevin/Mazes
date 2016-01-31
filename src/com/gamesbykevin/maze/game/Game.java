@@ -197,7 +197,7 @@ public final class Game implements IGame
      * @param y (y-coordinate)
      * @throws Exception
      */
-    public void update(final MotionEvent event, final float x, final float y) throws Exception
+    public void update(final int action, final float x, final float y) throws Exception
     {
     	//if reset we can't continue
     	if (hasReset())
@@ -205,14 +205,14 @@ public final class Game implements IGame
     	
     	if (!getLevels().hasSelection())
     	{
-    		if (event.getAction() == MotionEvent.ACTION_UP)
+    		if (action == MotionEvent.ACTION_UP)
     			getLevels().setPress((int)x, (int)y);
     	}
     	else
     	{
 	        //only update controller if exists
 	        if (getController() != null)
-	        	getController().update(event, x, y);
+	        	getController().update(action, x, y);
     	}
     }
     

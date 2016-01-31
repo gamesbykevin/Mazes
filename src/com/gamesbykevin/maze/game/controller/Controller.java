@@ -167,10 +167,10 @@ public class Controller implements IController
      * @return true if motion event was applied, false otherwise
      * @throws Exception
      */
-    public void update(final MotionEvent event, final float x, final float y) throws Exception
+    public void update(final int action, final float x, final float y) throws Exception
     {
         //check if the touch screen was released
-        if (event.getAction() == MotionEvent.ACTION_UP)
+        if (action == MotionEvent.ACTION_UP)
         {
             //check if the player hit the controller
             if (buttons.get(Assets.ImageGameKey.Pause).contains(x, y))
@@ -230,7 +230,7 @@ public class Controller implements IController
             	getGame().getHuman().pressRight(false);
             }
         }
-        else if (event.getAction() == MotionEvent.ACTION_DOWN)
+        else if (action == MotionEvent.ACTION_DOWN)
         {
             if (buttons.get(Assets.ImageGameKey.ControllerDown).contains(x, y))
             {
@@ -251,7 +251,7 @@ public class Controller implements IController
         }
         
         //if dragging on screen and not in any of these buttons we will flag false
-        if (event.getAction() == MotionEvent.ACTION_MOVE)
+        if (action == MotionEvent.ACTION_MOVE)
         {
             if (!buttons.get(Assets.ImageGameKey.ControllerDown).contains(x, y))
             	getGame().getHuman().pressDown(false);

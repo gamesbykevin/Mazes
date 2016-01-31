@@ -152,13 +152,13 @@ public class GameoverScreen implements Screen, Disposable
     }
     
     @Override
-    public boolean update(final MotionEvent event, final float x, final float y) throws Exception
+    public boolean update(final int action, final float x, final float y) throws Exception
     {
         //if we aren't displaying the menu, return false
         if (!display)
             return false;
         
-        if (event.getAction() == MotionEvent.ACTION_UP)
+        if (action == MotionEvent.ACTION_UP)
         {
             if (next.contains(x, y) && next.isVisible())
             {

@@ -31,17 +31,17 @@ public class MenuScreen implements Screen, Disposable
     /**
      * Button text to display to exit the game
      */
-    public static final String BUTTON_TEXT_EXIT_GAME = "Exit Game";
+    public static final String BUTTON_TEXT_EXIT_GAME = "Exit";
     
     /**
      * Button text to display to rate the game
      */
-    public static final String BUTTON_TEXT_RATE_APP = "Rate this App";
+    public static final String BUTTON_TEXT_RATE_APP = "Rate";
     
     /**
      * Button text to display to start a new game
      */
-    public static final String BUTTON_TEXT_START_GAME = "Start Game";
+    public static final String BUTTON_TEXT_START_GAME = "Start";
     
     /**
      * Button text to display for the options
@@ -54,7 +54,7 @@ public class MenuScreen implements Screen, Disposable
     public static final String BUTTON_TEXT_MORE_GAMES = "More Games";
     
     //icon dimension
-    public static final int ICON_DIMENSION = 64;
+    public static final int ICON_DIMENSION = 80;
     
     //start new game, and did we notify user
     private boolean reset = false, notify = false;
@@ -90,7 +90,6 @@ public class MenuScreen implements Screen, Disposable
         x += ScreenManager.BUTTON_X_INCREMENT;
         addButton(x, y, BUTTON_TEXT_OPTIONS, INDEX_BUTTON_OPTIONS);
         
-        
         //add rate button
         x += ScreenManager.BUTTON_X_INCREMENT;
         addButton(x, y, BUTTON_TEXT_RATE_APP, INDEX_BUTTON_RATE);
@@ -105,7 +104,7 @@ public class MenuScreen implements Screen, Disposable
         addButton(x, y, BUTTON_TEXT_EXIT_GAME, INDEX_BUTTON_EXIT);
         
         //add instructions button
-        x += ScreenManager.BUTTON_X_INCREMENT;
+        x += ScreenManager.BUTTON_X_INCREMENT - 15;
         addIcon(x, y, INDEX_BUTTON_INSTRUCTIONS, Assets.ImageMenuKey.Instructions);
         
         //add face book button
@@ -169,13 +168,13 @@ public class MenuScreen implements Screen, Disposable
     }
     
     @Override
-    public boolean update(final MotionEvent event, final float x, final float y) throws Exception
+    public boolean update(final int action, final float x, final float y) throws Exception
     {
         //if the game is to reset, don't continue
         if (reset)
             return false;
         
-        if (event.getAction() == MotionEvent.ACTION_UP)
+        if (action == MotionEvent.ACTION_UP)
         {
         	for (int index = 0; index < buttons.size(); index++)
         	{

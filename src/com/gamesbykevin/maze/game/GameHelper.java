@@ -6,7 +6,9 @@ import com.gamesbykevin.maze.assets.Assets;
 import com.gamesbykevin.maze.screen.OptionsScreen;
 import com.gamesbykevin.maze.screen.ScreenManager.State;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Vibrator;
 
 /**
  * This class will contain game helper methods
@@ -15,6 +17,11 @@ import android.graphics.Canvas;
  */
 public final class GameHelper 
 {
+    /**
+     * The length to vibrate the phone when you beat a level
+     */
+    private static final long VIBRATION_DURATION = 750;
+	
 	/**
 	 * Go to the next level with the current game settings
 	 * @param game Our game object reference
@@ -41,7 +48,7 @@ public final class GameHelper
 	protected static void reset(final Game game) throws Exception
 	{
         //do we render isometric
-        final boolean isometric = game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_RENDER) == 1;
+        final boolean isometric = game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_RENDER) == 0;
         
         //set the render according to the user selection and then reset
         game.getLabyrinth().setIsometric(isometric);
@@ -67,6 +74,10 @@ public final class GameHelper
 	            
             case 3:
         		description = "Size: X-Large";
+	            break;
+	            
+            case 4:
+        		description = "Size: XX-Large";
 	            break;
         }
         
@@ -155,6 +166,12 @@ public final class GameHelper
 					//if either have reached the goal, set game over
 					if (game.getHuman().hasGoal() || game.getCpu().hasGoal())
 					{
+		        		//get our vibrate object
+		        		Vibrator v = (Vibrator) game.getScreen().getPanel().getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+		        		 
+						//vibrate for a specified amount of milliseconds
+						v.vibrate(VIBRATION_DURATION);
+						
 						//flag the game over screen
 						game.getScreen().setState(State.GameOver);
 						game.getScreen().getScreenGameover().setMessage("");
