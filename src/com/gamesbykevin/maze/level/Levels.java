@@ -36,7 +36,7 @@ public class Levels implements IGame
     private static final int LEVELS_PER_PAGE = COLS * ROWS; 
     
     //the number of pages to select a level
-    private static final int PAGES = 15;
+    private static final int PAGES = 20;
     
     //the total number of levels
     public static final int TOTAL_LEVELS = LEVELS_PER_PAGE * PAGES;

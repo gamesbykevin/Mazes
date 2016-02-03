@@ -1,6 +1,8 @@
 package com.gamesbykevin.maze.panel;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -31,7 +33,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
     public static final int HEIGHT = 480;
     
     //the reference to our activity
-    private final MainActivity activity;
+    private MainActivity activity;
     
     //the object containing our game screens
     private ScreenManager screen;
@@ -60,8 +62,56 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         //call to parent constructor
         super(activity);
         
-        //store context
-        this.activity = activity;
+        //store activity
+        setActivity(activity);
+            
+        //make game panel focusable = true so it can handle events
+        super.setFocusable(true);
+    }
+    
+    /**
+     * Create a new game panel
+     * @param activity Our main activity reference
+     */
+    public GamePanel(final Context context)
+    {
+        //call to parent constructor
+    	super(context);
+        
+        //store activity
+        setActivity((MainActivity)context);
+            
+        //make game panel focusable = true so it can handle events
+        super.setFocusable(true);
+    }
+    
+    /**
+     * Create a new game panel
+     * @param activity Our main activity reference
+     */
+    public GamePanel(final Context context, final AttributeSet attrs)
+    {
+        //call to parent constructor
+    	super(context, attrs);
+        
+        //store activity
+        setActivity((MainActivity)context);
+            
+        //make game panel focusable = true so it can handle events
+        super.setFocusable(true);
+    }
+    
+    /**
+     * Create a new game panel
+     * @param activity Our main activity reference
+     */
+    public GamePanel(final Context context, final AttributeSet attrs, final int defStyle) 
+    {
+        //call to parent constructor
+    	super(context, attrs, defStyle);
+        
+        //store activity
+        setActivity((MainActivity)context);
             
         //make game panel focusable = true so it can handle events
         super.setFocusable(true);
@@ -135,6 +185,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         
         //recycle all asset objects
         Assets.recycle();
+    }
+    
+    /**
+     * Assign the activity
+     * @param activity
+     */
+    private final void setActivity(final MainActivity activity)
+    {
+    	if (activity != null)
+    		this.activity = activity;
     }
     
     /**
@@ -296,7 +356,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
         else
         {
         	//if the screen does not exist, just exit the game
-        	getActivity().finish();
+        	if (getActivity() != null)
+        		getActivity().finish();
         }
     }
     

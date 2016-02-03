@@ -3,6 +3,7 @@ package com.gamesbykevin.maze.screen;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
 import com.gamesbykevin.androidframework.anim.Animation;
 import com.gamesbykevin.androidframework.base.Entity;
 import com.gamesbykevin.androidframework.resources.Audio;
@@ -250,6 +251,18 @@ public final class ScreenManager implements Screen, Disposable
     	{
         	//assign the state
 	        this.state = state;
+	        
+	        //determine if we show the giftiz button
+	        if (getState() == State.Options || getState() == State.Ready)
+	        {
+	        	//show the button
+	        	getPanel().getActivity().showButton();
+	        }
+	        else
+	        {
+	        	//hide the button
+	        	getPanel().getActivity().hideButton();
+	        }
     	}
     }
     

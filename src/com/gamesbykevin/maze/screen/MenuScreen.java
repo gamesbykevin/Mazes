@@ -189,6 +189,9 @@ public class MenuScreen implements Screen, Disposable
 	                        //flag notify false
 	                        notify = false;
 	                        
+	                        //hide the button
+	                        screen.getPanel().getActivity().hideButton();
+	                        
 	                        //we do not request any additional events
 	                        return false;
 	                        

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-</LinearLayout>
+
+    <com.gamesbykevin.maze.panel.GamePanel 
+        android:id="@+id/surfaceView" 
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" />
+        
+    <!-- GIFTIZ Integration -->
+    <!-- Self managed Giftiz Button -->
+    <ImageView 
+    	android:id="@+id/self_managed_button" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:padding="30dip" />
+    
+</RelativeLayout>
