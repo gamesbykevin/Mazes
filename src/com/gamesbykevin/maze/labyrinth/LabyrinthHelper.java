@@ -40,6 +40,8 @@ public final class LabyrinthHelper
 		addAnimation(labyrinth, TileKey.IsometricE, 300, 130, w, h);
 		addAnimation(labyrinth, TileKey.IsometricW, 400, 130, w, h);
 		addAnimation(labyrinth, TileKey.IsometricGoal, 400, 195, w, h);
+		addAnimation(labyrinth, TileKey.IsometricVisited, 400, 260, w, h);
+		
 		
 		w = ANIMATION_WIDTH_TOP_DOWN;
 		h = ANIMATION_HEIGHT_TOP_DOWN;
@@ -60,6 +62,7 @@ public final class LabyrinthHelper
 		addAnimation(labyrinth, TileKey.TopDownNWE, 192, 328, w, h);
 		addAnimation(labyrinth, TileKey.TopDownNW, 256, 328, w, h);
 		addAnimation(labyrinth, TileKey.TopDownGoal, 0, 392, w, h);
+		addAnimation(labyrinth, TileKey.TopDownVisited, 64, 392, w, h);
 	}
 	
 	/**

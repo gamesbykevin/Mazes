@@ -42,13 +42,13 @@ public class Labyrinth extends Entity implements IGame
 		IsometricNWE, IsometricNWS, IsometricNSE, IsometricNSEW, IsometricSWE, IsometricNW,
 		IsometricNE, IsometricSE, IsometricSW, IsometricNS, IsometricWE, IsometricN,
 		IsometricS, IsometricE, IsometricW,
-		IsometricGoal,
+		IsometricGoal, IsometricVisited,
 		
 		TopDownNWE, TopDownNWS, TopDownNSE, TopDownNSEW,
 		TopDownSWE, TopDownNW, TopDownNE, TopDownSE,
 		TopDownSW, TopDownNS, TopDownWE, TopDownN,
 		TopDownS, TopDownE, TopDownW,
-		TopDownGoal
+		TopDownGoal, TopDownVisited
 	}
 	
     //the start coordinate of the first column, row (0,0)
@@ -179,6 +179,15 @@ public class Labyrinth extends Entity implements IGame
 		getMaze().getProgress().getPaint().setTypeface(Font.getFont(Assets.FontMenuKey.Default));
 		getMaze().getProgress().getPaint().setTextSize(32f);
 		getMaze().getProgress().setDescription("Generating Maze...  ");
+		
+		//mark all rooms in the maze as not visited, so we can track where the player goes
+		for (int col = 0; col < getMaze().getCols(); col++)
+		{
+			for (int row = 0; row < getMaze().getRows(); row++)
+			{
+				getMaze().getRoom(col, row).setVisited(false);
+			}
+		}
 	}
 	
 	/**
@@ -390,6 +399,14 @@ public class Labyrinth extends Entity implements IGame
 					{
 						//assign the goal key
 						super.getSpritesheet().setKey(hasIsometric() ? TileKey.IsometricGoal : TileKey.TopDownGoal);
+						
+						//draw it
+						super.render(canvas);
+					}
+					else if (getMaze().getRoom(col, row).hasVisited())
+					{
+						//if we visited this tile, render overlay
+						super.getSpritesheet().setKey(hasIsometric() ? TileKey.IsometricVisited : TileKey.TopDownVisited);
 						
 						//draw it
 						super.render(canvas);

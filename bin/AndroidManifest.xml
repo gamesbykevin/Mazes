@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.gamesbykevin.maze"
-      android:versionCode="3"
-      android:versionName="1.9">
+      android:versionCode="5"
+      android:versionName="2.1">
     <uses-sdk android:minSdkVersion="15" />
 	<uses-permission android:name="android.permission.VIBRATE"/>
 	
@@ -38,10 +38,7 @@
         </activity>
          
         <!-- PARTNER KEY, use your real key instead of TEST_PARTNER_KEY -->
-        <meta-data android:name="GIFTIZ_PARTNER_KEY" android:value="TEST_PARTNER_KEY"/>
-        
-        <!-- Activate Giftiz SDK Logging info -->
-        <meta-data android:name="SHOW_GIFTIZ_LOG" android:value="true" />
+        <meta-data android:name="GIFTIZ_PARTNER_KEY" android:value="706135a5-4b5d-40bf-8d63-ef468cffbecd"/>
     	 
         <!-- Declare Activity -->
 	    <activity android:name="com.purplebrain.giftiz.sdk.GiftizWebViewActivity" />

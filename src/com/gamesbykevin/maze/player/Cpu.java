@@ -19,6 +19,9 @@ public class Cpu extends Player
 	//our path in the maze
 	private List<Cell> path;
 	
+	//all of the locations the cpu has visited
+	private List<Cell> visited;
+	
 	public static final double VELOCITY = .1;
 	
 	//do we update/render the computer
@@ -36,6 +39,26 @@ public class Cpu extends Player
 		
 		//create list for our path
 		this.path = new ArrayList<Cell>();
+		
+		//create list for the visited
+		this.visited = new ArrayList<Cell>();
+	}
+	
+	@Override
+	public void dispose()
+	{
+		if (this.path != null)
+			this.path.clear();
+		if (this.visited != null)
+			this.visited.clear();
+		if (this.options != null)
+			this.options.clear();
+		
+		this.path = null;
+		this.visited = null;
+		this.options = null;
+		
+		super.dispose();
 	}
 	
 	@Override
@@ -46,6 +69,7 @@ public class Cpu extends Player
 		//clear our lists
 		options.clear();
 		path.clear();
+		visited.clear();
 		
 		//mark all rooms in the maze unvisited (if exist)
 		if (getGame().getLabyrinth() != null)
@@ -148,19 +172,29 @@ public class Cpu extends Player
 		//also add the new location to our path
 		path.add(new Cell(col, row));
 		
-		//also mark the location as visited
-		getGame().getLabyrinth().getMaze().getRoom((int)col, (int)row).setVisited(true);
+		//also mark the location as visited (if we haven't already)
+		if (!hasVisited(col, row))
+			visited.add(new Cell((int)col, (int)row));
 	}
 	
 	/**
 	 * Have we visited the specified location?
 	 * @param col Column
 	 * @param row Row
-	 * @return true if the location was visited in the maze object, false otherwise
+	 * @return true if the player visited the location, false otherwise
 	 */
 	private boolean hasVisited(final double col, final double row)
 	{
-		return getGame().getLabyrinth().getMaze().getRoom((int)col, (int)row).hasVisited();
+		//check our list to see if we have visited
+		for (Cell cell : visited)
+		{
+			//if we have the location, return true
+			if (cell.hasLocation(col, row))
+				return true;
+		}
+		
+		//return false because we did not find the location
+		return false;
 	}
 	
 	public void setVisible(final boolean visible)

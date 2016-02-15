@@ -126,6 +126,10 @@ public class Human extends Player
 				//get the current room
 				final Room room = super.getGame().getLabyrinth().getMaze().getRoom((int)getCol(), (int)getRow());
 				
+				//flag true that the human visited this room
+				if (super.isHuman())
+					room.setVisited(true);
+				
 				if (dx < 0)
 				{
 					//if the wall does not exist add to the list of available options
