@@ -179,7 +179,7 @@ public class OptionsScreen implements Screen, Disposable
     private void addButtonRender(int x, int y)
     {
         Button button = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        button.addDescription("View:  Isometric");
+        button.addDescription("View:  Iso");
         button.addDescription("View:  2D");
         button.setX(x);
         button.setY(y);

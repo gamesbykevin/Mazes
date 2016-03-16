@@ -51,7 +51,7 @@ public class MenuScreen implements Screen, Disposable
     /**
      * Button text to display for more games
      */
-    public static final String BUTTON_TEXT_MORE_GAMES = "More Games";
+    public static final String BUTTON_TEXT_MORE_GAMES = "More";
     
     //icon dimension
     public static final int ICON_DIMENSION = 80;
@@ -188,9 +188,6 @@ public class MenuScreen implements Screen, Disposable
 	                        
 	                        //flag notify false
 	                        notify = false;
-	                        
-	                        //hide the button
-	                        screen.getPanel().getActivity().hideButton();
 	                        
 	                        //we do not request any additional events
 	                        return false;

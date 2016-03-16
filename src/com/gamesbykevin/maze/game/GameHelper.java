@@ -179,16 +179,6 @@ public final class GameHelper
 						//check who wins to determine what happens next
 						if (game.getHuman().hasGoal())
 						{
-							//if we beat level 2 we completed the mission
-							if (game.getLevels().getLevelIndex() == 1)
-							{
-								/**
-								 * Human completed the maze
-								 * Giftiz integration, mission complete
-								 */
-								game.getScreen().getPanel().getActivity().missionCompleted(null);
-							}
-							
 							switch (game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_MODE))
 							{
 								//we will update the score if casual or timed mode

@@ -364,7 +364,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Di
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        //does anything need to be done here?
+    	//don't need to do anything here
     }
     
     /**

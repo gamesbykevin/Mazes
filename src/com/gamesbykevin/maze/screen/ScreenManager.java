@@ -251,18 +251,6 @@ public final class ScreenManager implements Screen, Disposable
     	{
         	//assign the state
 	        this.state = state;
-	        
-	        //determine if we show the giftiz button
-	        if (getState() == State.Options || getState() == State.Ready)
-	        {
-	        	//show the button
-	        	getPanel().getActivity().showButton();
-	        }
-	        else
-	        {
-	        	//hide the button
-	        	getPanel().getActivity().hideButton();
-	        }
     	}
     }
     

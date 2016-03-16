@@ -1,20 +1,15 @@
 package com.gamesbykevin.maze;
 
 import com.gamesbykevin.maze.panel.GamePanel;
-import com.purplebrain.giftiz.sdk.GiftizSDK;
-import com.purplebrain.giftiz.sdk.GiftizSDK.Inner.ButtonNeedsUpdateDelegate;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
-public class MainActivity extends Activity implements ButtonNeedsUpdateDelegate
+public class MainActivity extends Activity
 {
     /**
      * Our web site address where more games can be found
@@ -63,19 +58,6 @@ public class MainActivity extends Activity implements ButtonNeedsUpdateDelegate
         //set content view
         super.setContentView(R.layout.main);
         
-        // Register to know when to update Giftiz Button
-        GiftizSDK.Inner.setButtonNeedsUpdateDelegate(this);
-        
-        // Connect Click action
-  		ImageView selfManagedButton = (ImageView) findViewById(R.id.self_managed_button);
-  		
-  		//set on click listener
-  		selfManagedButton.setOnClickListener(new OnClickListener() {
-        	  @Override public void onClick(View v) {
-        		  GiftizSDK.Inner.buttonClicked(MainActivity.this);
-        	  }
-  		});
-  		
         //get the game panel view
         final GamePanel panel = ((GamePanel)findViewById(R.id.surfaceView));
         
@@ -143,9 +125,6 @@ public class MainActivity extends Activity implements ButtonNeedsUpdateDelegate
     public void onPause()
     {
         super.onPause();
-        
-    	//giftiz integration
-    	GiftizSDK.onPauseMainActivity(this);
     }
     
     /**
@@ -155,66 +134,8 @@ public class MainActivity extends Activity implements ButtonNeedsUpdateDelegate
     public void onResume()
     {
     	super.onResume();
-    	
-    	//giftiz integration
-    	GiftizSDK.onResumeMainActivity(this);
-    	
-    	//configure button 
-    	updateButtonImage();
     }
     
-    /**
-     * Show the giftiz button
-     */
-    public void showButton()
-    {
-    	//show the button
-    	runOnUiThread(new Runnable() {
-    	     @Override
-    	     public void run() {
- 	        	((ImageView)findViewById(R.id.self_managed_button)).setVisibility(View.VISIBLE);
-    	    }
-    	});
-    }
-    
-    /**
-     * Hide the giftiz button
-     */
-    public void hideButton()
-    {
-    	//hide the button
-    	runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				((ImageView)findViewById(R.id.self_managed_button)).setVisibility(View.INVISIBLE);
-			}
-    	});
-    }
-    
-    @Override // Callback to update button
-	public void buttonNeedsUpdate() 
-    {
-		updateButtonImage();
-	}
-    
-	private void updateButtonImage() 
-	{
-		// pick the right button image according to the button status
-		ImageView selfManagedButton = (ImageView) findViewById(R.id.self_managed_button);
-        switch (GiftizSDK.Inner.getButtonStatus(this)) 
-        {
-        	case ButtonInvisible : selfManagedButton.setVisibility(View.GONE);break;
-        	case ButtonNaked : selfManagedButton.setImageResource(R.drawable.giftiz_logo_self);break;
-        	case ButtonBadge : selfManagedButton.setImageResource(R.drawable.giftiz_logo_badge_self);break;
-        	case ButtonWarning : selfManagedButton.setImageResource(R.drawable.giftiz_logo_warning_self);break;
-        }
-	}
-	
-	public void missionCompleted(View v) 
-	{
-    	GiftizSDK.missionComplete(this);
-    }
-	
     /**
      * Navigate to the desired web page
      * @param url The desired url
