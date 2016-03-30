@@ -166,11 +166,15 @@ public final class GameHelper
 					//if either have reached the goal, set game over
 					if (game.getHuman().hasGoal() || game.getCpu().hasGoal())
 					{
-		        		//get our vibrate object
-		        		Vibrator v = (Vibrator) game.getScreen().getPanel().getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-		        		 
-						//vibrate for a specified amount of milliseconds
-						v.vibrate(VIBRATION_DURATION);
+						//make sure option is enabled
+						if (game.getScreen().getScreenOptions().getIndex(OptionsScreen.INDEX_BUTTON_SOUND) == 0)
+						{
+			        		//get our vibrate object
+			        		Vibrator v = (Vibrator) game.getScreen().getPanel().getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+			        		 
+							//vibrate for a specified amount of milliseconds
+							v.vibrate(VIBRATION_DURATION);
+						}
 						
 						//flag the game over screen
 						game.getScreen().setState(State.GameOver);

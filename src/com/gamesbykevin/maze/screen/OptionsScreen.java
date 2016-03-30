@@ -192,8 +192,8 @@ public class OptionsScreen implements Screen, Disposable
     private void addButtonSound(int x, int y)
     {
         Button button = new Button(Images.getImage(Assets.ImageMenuKey.Button));
-        button.addDescription("Sound: On");
-        button.addDescription("Sound: Off");
+        button.addDescription("Audio / Vib: On");
+        button.addDescription("Audio / Vib: Off");
         button.setX(x);
         button.setY(y);
         button.updateBounds();
