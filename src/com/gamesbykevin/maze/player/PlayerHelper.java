@@ -1,10 +1,15 @@
 package com.gamesbykevin.maze.player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gamesbykevin.androidframework.anim.Animation;
 import com.gamesbykevin.androidframework.maze.Room;
 import com.gamesbykevin.androidframework.maze.Room.Wall;
 import com.gamesbykevin.androidframework.resources.Images;
 import com.gamesbykevin.maze.assets.Assets;
+import com.gamesbykevin.maze.panel.GamePanel;
+import com.gamesbykevin.maze.player.Human.Location;
 import com.gamesbykevin.maze.player.Player.AnimationKey;
 
 public final class PlayerHelper 
@@ -245,5 +250,192 @@ public final class PlayerHelper
 		
 		//add to sprite sheet
 		player.getSpritesheet().add(key, animation);
+	}
+	
+	protected static void updateAI(final Human player, List<Location> steps)
+	{
+		//create if null
+		if (steps == null)
+			steps = new ArrayList<Location>();
+		
+		//if there are no steps let's create them
+		if (steps.isEmpty())
+		{
+			//keep track of visited locations
+			List<Location> visited = new ArrayList<Location>();
+			
+			//list of optional directions to go for a location
+			List<Wall> test = new ArrayList<Wall>();
+			
+			//start where the human currently is located
+			int col = (int)player.getCol(); 
+			int row = (int)player.getRow();
+			
+			//continue until we are at the goal
+			while (!player.hasGoal(col, row))
+			{
+				//clear list
+				test.clear();
+				
+				for (Wall wall : Wall.values())
+				{
+					//if there isn't a wall
+					if (!player.getGame().getLabyrinth().getMaze().getRoom(col, row).hasWall(wall))
+					{
+						int offsetCol = 0;
+						int offsetRow = 0;
+						
+						switch (wall)
+						{
+    						case North:
+    							offsetRow = -1;
+    							break;
+    							
+    						case South:
+    							offsetRow = 1;
+    							break;
+    							
+    						case East:
+    							offsetCol = 1;
+    							break;
+    							
+    						case West:
+    							offsetCol = -1;
+    							break;
+						}
+						
+						//do we already have this location
+						boolean match = false;
+						
+						//and if it isn't already in our steps add it to test list
+						for (Location location : steps)
+						{
+							if (location.col == col + offsetCol && location.row == row + offsetRow)
+							{
+								//we have a match
+								match = true;
+								
+								//exit loop
+								break;
+							}
+						}
+						
+						if (!match)
+						{
+							//also make sure it isn't in our list of visited locations
+							for (Location location : visited)
+							{
+								if (location.col == col + offsetCol && location.row == row + offsetRow)
+								{
+									//we have a match
+									match = true;
+									
+									//exit loop
+									break;
+								}
+							}
+						}
+						
+						//if this is not a match this direction is an option
+						if (!match)
+						{
+							test.add(wall);
+						}
+					}
+				}
+				
+				//if we don't have any open options go backwards
+				if (test.isEmpty())
+				{
+					//add to visited locations as well
+					visited.add(new Location(col, row));
+					
+					//remove last entry from steps list
+					steps.remove(steps.size() - 1);
+					
+					//go back to last location
+					col = (int)steps.get(steps.size() - 1).col;
+					row = (int)steps.get(steps.size() - 1).row;
+				}
+				else
+				{
+					int offsetCol = 0;
+					int offsetRow = 0;
+					
+					//get random wall
+					switch (test.get(GamePanel.RANDOM.nextInt(test.size())))
+					{
+						case North:
+							offsetRow = -1;
+							break;
+							
+						case South:
+							offsetRow = 1;
+							break;
+							
+						case East:
+							offsetCol = 1;
+							break;
+							
+						case West:
+							offsetCol = -1;
+							break;
+					}
+					
+					col += offsetCol;
+					row += offsetRow;
+					
+					//add to the list of steps
+					steps.add(new Location(col, row));
+				}
+			}
+			
+			//add start location as our first step
+			steps.add(0, new Location(player.getCol(), player.getRow()));
+			
+			//assign the steps
+			player.setSteps(steps);
+		}
+		else
+		{
+			//determine which direction to head in
+			if (player.getCol() < steps.get(0).col)
+			{
+				player.pressRight(true);
+				player.pressLeft(false);
+				player.pressDown(false);
+				player.pressUp(false);
+			}
+			else if (player.getCol() > steps.get(0).col)
+			{
+				player.pressRight(false);
+				player.pressLeft(true);
+				player.pressDown(false);
+				player.pressUp(false);
+			}
+			else if (player.getRow() < steps.get(0).row)
+			{
+				player.pressRight(false);
+				player.pressLeft(false);
+				player.pressDown(true);
+				player.pressUp(false);
+			}
+			else if (player.getRow() > steps.get(0).row)
+			{
+				player.pressRight(false);
+				player.pressLeft(false);
+				player.pressDown(false);
+				player.pressUp(true);
+			}
+			else
+			{
+				steps.remove(0);
+				
+				player.pressRight(false);
+				player.pressLeft(false);
+				player.pressDown(false);
+				player.pressUp(false);
+			}
+		}
 	}
 }

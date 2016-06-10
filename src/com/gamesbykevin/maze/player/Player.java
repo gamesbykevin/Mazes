@@ -144,8 +144,19 @@ public abstract class Player extends Entity implements IGame
 	 */
 	public boolean hasGoal()
 	{
-		//if the location of the finish matches the location of this player
-		if (getGame().getLabyrinth().getMaze().getFinish().hasLocation(this))
+		return (hasGoal(super.getCol(), super.getRow()));
+	}
+	
+	/**
+	 * Is the player at the specified (col, row) goal
+	 * @param col column
+	 * @param row row
+	 * @return true if the player location matches the specified location, false otherwise
+	 */
+	public boolean hasGoal(final double col, final double row)
+	{
+		//if the location of the finish matches this location we have the specified goal
+		if (getGame().getLabyrinth().getMaze().getFinish().hasLocation(col, row))
 			return true;
 		
 		//return false

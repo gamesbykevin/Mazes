@@ -11,6 +11,7 @@ import com.gamesbykevin.maze.panel.GamePanel;
 import com.gamesbykevin.maze.scorecard.Score;
 import com.gamesbykevin.maze.screen.OptionsScreen;
 import com.gamesbykevin.maze.screen.ScreenManager.State;
+import com.gamesbykevin.maze.thread.MainThread;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -44,7 +45,11 @@ public class Human extends Player
 	private String timeDescription = "";
 	private String bestDescription = "";
 	
+	//paint object to draw text
 	private Paint paint;
+	
+	//steps to solve the maze
+	private List<Location> steps;
 	
 	public Human(final Game game)
 	{
@@ -69,6 +74,10 @@ public class Human extends Player
 	public void reset() throws Exception
 	{
 		super.reset();
+		
+		//remove any existing steps
+		if (this.steps != null)
+			this.steps.clear();
 		
 		//reset our messages
 		this.timeDescription = "";
@@ -110,6 +119,12 @@ public class Human extends Player
 		//update parent
 		super.update();
 		
+    	//if we are debugging, run ai component
+    	if (MainThread.DEBUG)
+    	{
+    		PlayerHelper.updateAI(this, this.steps);
+    	}
+    	
 		//if the player is at their target, determine if we need to move them again
 		if (super.hasTarget())
 		{
@@ -440,4 +455,29 @@ public class Human extends Player
 		canvas.drawText(bestDescription, TIME_X, TIME_Y + 25, paint);
 		
     }
+	
+	
+	/**
+	 * A location on the maze
+	 */
+	protected static class Location
+	{
+		protected double col, row;
+		
+		protected Location(final double col, final double row)
+		{
+			this.col = col;
+			this.row = row;
+		}
+		
+		protected Location(final int col, final int row)
+		{
+			this ((double)col, (double)row);
+		}
+	}
+	
+	protected void setSteps(final List<Location> steps)
+	{
+		this.steps = steps;
+	}
 }
